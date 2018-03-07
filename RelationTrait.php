@@ -362,9 +362,9 @@ trait RelationTrait
                             }
                         }
                         if ($isSoftDelete) {
-                            $error = !$this->{$data['name']}[0]->updateAll($this->_rt_softdelete, ['and', $array]);
+                            $error = !array_values($this->{$data['name']})[0]->updateAll($this->_rt_softdelete, ['and', $array]);
                         } else {
-                            $error = !$this->{$data['name']}[0]->deleteAll(['and', $array]);
+                            $error = !array_values($this->{$data['name']})[0]->deleteAll(['and', $array]);
                         }
                     }
                 }
@@ -423,7 +423,7 @@ trait RelationTrait
                                 $array[$key] = $this->$value;
                             }
                         }
-                        $error = !$this->{$data['name']}[0]->updateAll($this->_rt_softrestore, ['and', $array]);
+                        $error = !array_values($this->{$data['name']})[0]->updateAll($this->_rt_softrestore, ['and', $array]);
                     }
                 }
             }
