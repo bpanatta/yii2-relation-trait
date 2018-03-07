@@ -374,7 +374,10 @@ trait RelationTrait
                 return false;
             }
             if ($isSoftDelete) {
-                $this->attributes = array_merge($this->attributes, $this->_rt_softdelete);
+                foreach ($this->_rt_softdelete as $key => $item) {
+                    if (isset($this->$key))
+                        $this->$key = $item;
+                }
                 if ($this->save(false)) {
                     $trans->commit();
                     return true;
@@ -431,7 +434,10 @@ trait RelationTrait
                 $trans->rollback();
                 return false;
             }
-            $this->attributes = array_merge($this->attributes, $this->_rt_softrestore);
+            foreach ($this->_rt_softrestore as $key => $item) {
+                if (isset($this->$key))
+                    $this->$key = $item;
+            }
             if ($this->save(false)) {
                 $trans->commit();
                 return true;
