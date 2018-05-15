@@ -210,7 +210,7 @@ trait RelationTrait
                                             array_push($query, $notIn);
                                         }
                                         try {
-                                            if ($isSoftDelete) {
+                                            if ($isSoftDelete && isset($relModel->_rt_softdelete)) {
                                                 $relModel->updateAll($this->_rt_softdelete, $query);
                                             } else {
                                                 $relModel->deleteAll($query);
@@ -224,7 +224,7 @@ trait RelationTrait
                                         $query = ['and', $notDeletedFK, ['not in', $relPKAttr[0], $notDeletedPK]];
                                         if (!empty($notDeletedPK)) {
                                             try {
-                                                if ($isSoftDelete) {
+                                                if ($isSoftDelete && isset($relModel->_rt_softdelete)) {
                                                     $relModel->updateAll($this->_rt_softdelete, $query);
                                                 } else {
                                                     $relModel->deleteAll($query);
@@ -288,7 +288,7 @@ trait RelationTrait
                                 $condition[$k] = $this->$v;
                             }
                             try {
-                                if ($isSoftDelete) {
+                                if ($isSoftDelete && isset($relModel->_rt_softdelete)) {
                                     $relModel->updateAll($this->_rt_softdelete, ['and', $condition]);
                                 } else {
                                     $relModel->deleteAll(['and', $condition]);
@@ -303,7 +303,7 @@ trait RelationTrait
                                     $condition[$k] = $this->$v;
                                 }
                                 try {
-                                    if ($isSoftDelete) {
+                                    if ($isSoftDelete && isset($relModel->_rt_softdelete)) {
                                         $relModel->updateAll($this->_rt_softdelete, ['and', $condition]);
                                     } else {
                                         $relModel->deleteAll(['and', $condition]);
