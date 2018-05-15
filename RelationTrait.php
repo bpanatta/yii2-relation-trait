@@ -221,8 +221,12 @@ trait RelationTrait
                                         }
                                     } else {
                                         // Has Many
-                                        $query = ['and', $notDeletedFK, ['not in', $relPKAttr[0], $notDeletedPK]];
                                         if (!empty($notDeletedPK)) {
+                                            if (!is_array($notDeletedPK) || (is_array($notDeletedPK) && array_values($notDeletedPK)[0] != null)) {
+                                                $query = ['and', $notDeletedFK, ['not in', $relPKAttr[0], $notDeletedPK]];
+                                            } else {
+                                                $query = ['and', $notDeletedFK];
+                                            }
                                             try {
                                                 if ($isSoftDelete && isset($relModel->_rt_softdelete)) {
                                                     $relModel->updateAll($this->_rt_softdelete, $query);
