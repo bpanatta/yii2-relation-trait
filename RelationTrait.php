@@ -365,7 +365,8 @@ trait RelationTrait
                                 $array[$key] = $this->$value;
                             }
                         }
-                        if ($isSoftDelete) {
+                        $relModel = new $data['modelClass'];
+                        if ($isSoftDelete && isset($relModel->_rt_softdelete)) {
                             $error = !array_values($this->{$data['name']})[0]->updateAll($this->_rt_softdelete, ['and', $array]);
                         } else {
                             $error = !array_values($this->{$data['name']})[0]->deleteAll(['and', $array]);
