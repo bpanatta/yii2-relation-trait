@@ -122,22 +122,28 @@ trait RelationTrait
                     if (is_null($relObj)) {
                         $relObj = new $relModelClass;
                     }
+					// If object has a relationIndexingAttribute, set the key in the attribute
+					if (is_callable([$relObj, 'relationIndexingAttribute']))
+						$relPost[$relObj->relationIndexingAttribute()] = $relKey;
                     $relObj->load($relPost, '');
-                    $container[] = $relObj;
+                    $container[$relKey] = $relObj;
                 }
             }
             $this->populateRelation($relName, $container);
         } else if ($isHasMany) {
             $container = [];
-            foreach ($v as $relPost) {
+            foreach ($v as $relKey => $relPost) {
                 if (array_filter($relPost)) {
                     /* @var $relObj ActiveRecord */
                     $relObj = (empty($relPost[$relPKAttr[0]])) ? new $relModelClass() : $relModelClass::findOne($relPost[$relPKAttr[0]]);
                     if (is_null($relObj)) {
                         $relObj = new $relModelClass();
                     }
+					// If object has a relationIndexingAttribute, set the key in the attribute
+					if (is_callable([$relObj, 'relationIndexingAttribute']))
+						$relPost[$relObj->relationIndexingAttribute()] = $relKey;
                     $relObj->load($relPost, '');
-                    $container[] = $relObj;
+                    $container[$relKey] = $relObj;
                 }
             }
             $this->populateRelation($relName, $container);
@@ -176,7 +182,7 @@ trait RelationTrait
                         if (!empty($records)) {
                             $notDeletedPK = [];
                             $notDeletedFK = [];
-                            $relPKAttr = ($AQ->multiple) ? $records[0]->primaryKey() : $records->primaryKey();
+                            $relPKAttr = ($AQ->multiple) ? array_values($records)[0]->primaryKey() : $records->primaryKey();
                             $isManyMany = (count($relPKAttr) > 1);
                             if ($AQ->multiple) {
                                 /* @var $relModel ActiveRecord */
