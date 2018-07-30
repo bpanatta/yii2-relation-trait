@@ -123,7 +123,7 @@ trait RelationTrait
                         $relObj = new $relModelClass;
                     }
 					// If object has a relationIndexingAttribute, set the key in the attribute
-					if (is_callable([$relObj, 'relationIndexingAttribute']))
+					if (method_exists($relObj, 'relationIndexingAttribute'))
 						$relPost[$relObj->relationIndexingAttribute()] = $relKey;
                     $relObj->load($relPost, '');
                     $container[$relKey] = $relObj;
@@ -140,7 +140,7 @@ trait RelationTrait
                         $relObj = new $relModelClass();
                     }
 					// If object has a relationIndexingAttribute, set the key in the attribute
-					if (is_callable([$relObj, 'relationIndexingAttribute']))
+					if (method_exists($relObj, 'relationIndexingAttribute'))
 						$relPost[$relObj->relationIndexingAttribute()] = $relKey;
                     $relObj->load($relPost, '');
                     $container[$relKey] = $relObj;
