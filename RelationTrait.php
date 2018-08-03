@@ -156,6 +156,26 @@ trait RelationTrait
     }
 
     /**
+     * Save model including the selected related models
+     * @param array $relations
+     * @return bool
+     * @throws Exception
+     */
+    public function saveWith($relations = [])
+    {
+		$skippedRelations = $this->relationNames();
+		foreach ($relations as $relName) {
+			foreach ($skippedRelations as $idx => $skippedRelName) {
+				if ($relName == $skippedRelName) {
+					unset($skippedRelations[$idx]);
+					break;
+				}
+			}
+		}
+		return $this->saveAll($skippedRelations);
+	}
+
+    /**
      * Save model including all related model already loaded
      * @param array $skippedRelations
      * @return bool
